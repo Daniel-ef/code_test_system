@@ -3,9 +3,9 @@ from flask import Flask, request
 import threading
 import uuid
 
-from task_scheduler import run_task_scheduler_async
-from tasks_storage import TasksStorage
-import utils
+from src.task_scheduler import run_task_scheduler_async
+from src.tasks_storage import TasksStorage
+from src import utils
 
 app = Flask(__name__)
 

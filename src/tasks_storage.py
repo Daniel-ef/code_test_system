@@ -1,7 +1,7 @@
 import queue
 
-from configs import Config
-from utils import do_another_task
+from src.configs import Config
+from src.utils import do_another_task
 
 
 class _TaskResponse:

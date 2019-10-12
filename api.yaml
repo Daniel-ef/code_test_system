@@ -1,0 +1,86 @@
+paths:
+  post:
+    /put_task:
+      request:
+        properties:
+          code:
+            type: text
+            required: true
+          interpretator:
+            type: text
+            required: true
+      response:
+        200:
+          properties:
+            task_id:
+              description: uuid or serial number
+              type: text
+    /test_task:
+      request:
+        properties:
+          code:
+            type: text
+            required: true
+          interpretator:
+            type: text
+            required: true
+          tests_id:
+            type: text
+            required: true
+      response:
+        200:
+          properties:
+            task_id:
+              description: uuid or serial number
+              type: text
+  get:
+    /get_task:
+      request:
+        parameters:
+          - in: query
+            name: task_id
+            type: text
+      response:
+        200:
+          parameters:
+            status:
+              required: true
+              enum:
+                - ok
+                - error
+            output:
+              required: false
+              type: text
+            error:
+              required: false
+              type: text
+        204:
+          description: Task is pending
+    /get_test_result:
+      request:
+        parameters:
+          - in: query
+            name: task_id
+            type: text
+      response:
+        200:
+          parameters:
+            status:
+              required: true
+              enum:
+                - ok
+                - error
+            error_type:
+              required: false
+              enum:
+                - RE
+                - TL
+                - ML
+            error_num:
+              required: false
+              type: integer
+            error_count:
+              required: false
+              type: integer
+        204:
+          description: Task is pending

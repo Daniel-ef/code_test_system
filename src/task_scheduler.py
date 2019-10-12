@@ -1,9 +1,9 @@
 import asyncio
 import docker
 
-import utils
+from src import utils
 
-from configs import Config
+from src.configs import Config
 
 
 class TaskRunner:

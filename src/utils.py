@@ -1,6 +1,6 @@
 import asyncio
 
-from configs import Config
+from src.configs import Config
 
 
 def get_script(_id) -> str:

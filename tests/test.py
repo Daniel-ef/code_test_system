@@ -2,7 +2,7 @@ import time
 import pytest
 import requests
 
-from main import app
+from src.main import app
 
 use_mock_client = False
 
