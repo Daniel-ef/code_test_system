@@ -1,0 +1,4 @@
+.idea
+venv/
+scripts/*
+draft.py

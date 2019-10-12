@@ -1,4 +1,10 @@
-class TaskResponse:
+import queue
+
+from configs import Config
+from utils import do_another_task
+
+
+class _TaskResponse:
     def __init__(self, id, out=None, error=None):
         self.id = id
         self.status = 'pending'
@@ -35,3 +41,36 @@ class TaskResponse:
                     'status': 'error',
                     'error': self.error,
                  }
+
+
+class TasksStorage:
+    def __init__(self):
+        self.task_queue = queue.Queue()
+        self.task_responses = {}  # id: response
+        self.cnt = 0
+
+    def put_task(self, _id):
+        self.task_queue.put(_id)
+
+    async def get_task(self):
+        while True:
+            if self.cnt >= Config.MAX_TASKS:
+                await do_another_task()
+                continue
+            try:
+                _id = self.task_queue.get_nowait()
+                self.cnt += 1
+                return _id
+            except:
+                await do_another_task()
+                continue
+
+    def put_result(self, _id, out, error):
+        self.task_responses[_id] = _TaskResponse(_id, out, error)
+        self.cnt -= 1
+
+    def get_result(self, _id):
+        return self.task_responses.get(_id, _TaskResponse(_id))
+
+    def print_result(self, _id):
+        print(self.task_responses.get(_id))

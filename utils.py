@@ -1,11 +1,17 @@
+import asyncio
+
 from configs import Config
 
 
-def get_script(id_) -> str:
-    with open(f'{Config.SCRIPTS_PATH}/{id_}.py', 'r') as f:
+def get_script(_id) -> str:
+    with open(f'{Config.SCRIPTS_PATH}/{_id}.py', 'r') as f:
         return f.read()
 
 
-def save_script(id_: str, script: str):
-    with open(f'{Config.SCRIPTS_PATH}/{id_}.py', 'w') as f:
+def save_script(_id: str, script: str):
+    with open(f'{Config.SCRIPTS_PATH}/{_id}.py', 'w') as f:
         f.write(script)
+
+
+async def do_another_task():
+    await asyncio.sleep(Config.DELAY_IN_ASYNC)

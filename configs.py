@@ -6,5 +6,5 @@ class Config:
 
     SCRIPTS_PATH = ROOT_DIR + '/scripts/'
     IMAGINE_NAME = 'ya_contest'
-
-
+    MAX_TASKS = 5
+    DELAY_IN_ASYNC = 0.001

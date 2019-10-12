@@ -2,36 +2,34 @@ from flask import Flask, request
 
 import threading
 import uuid
-import queue
 
-from task_scheduler import task_scheduler
-from task_response import TaskResponse
+from task_scheduler import run_task_scheduler_async
+from tasks_storage import TasksStorage
 import utils
 
 app = Flask(__name__)
 
+tasks_storage = TasksStorage()
 
-task_queue = queue.Queue()
-task_responses = {}  # id: response
 
-threading.Thread(target=task_scheduler,
-                 args=(task_queue, task_responses,),
+threading.Thread(target=run_task_scheduler_async,
+                 args=(tasks_storage,),
                  ).start()
 
 
 @app.route('/put', methods=['POST'])
 def put():
-    id_ = uuid.uuid4().hex
+    _id = uuid.uuid4().hex
 
-    utils.save_script(id_, request.data.decode())
+    utils.save_script(_id, request.data.decode())
 
-    task_queue.put(id_)
-    return id_
+    tasks_storage.put_task(_id)
+    return _id
 
 
 @app.route('/get', methods=['GET'])
 def get():
-    id_ = request.args.get('id')
-    task_response = task_responses.get(id_, TaskResponse(id_))
+    _id = request.args.get('id')
+    task_response = tasks_storage.get_result(_id)
 
     return task_response.body()
